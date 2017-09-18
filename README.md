@@ -1,2 +1,38 @@
-# Xeon-SpeedoMeter
-A Simple filterscript for SA:MP server (GTA SA: Modification)
+# Xeon SpeedoMeter
+
+## Introduction:
+This is another simple filterscript for SA:MP server (GTA SA: Modification).
+This filterscript is a speedmeter with arrows (analog speedo) using edistance for counting the Kilometers per vehicle.
+
+## Requipements:
+
+All you needs is a_samp and edistance includes.
+
+a_samp is already included by default (server package)
+edistance edited version will be uploaded soon (because of original one is kind of bugged)
+
+## How its works?
+
+When a player get in a vehicle the textdraw showup  (speedo) and after the player get out of the car the textdraw disappear, Gear detection and KM Counter is automaticly done! you don't need anything!
+
+## Video
+
+Coming Soon...
+
+## Screenshots
+
+https://cdn.discordapp.com/attachments/349950142348001281/359414415424094208/sa-mp-086.png
+https://cdn.discordapp.com/attachments/349950142348001281/359414355856457728/sa-mp-087.png
+
+## Credits:
+
+*SA:MP Team
+*Kar
+*Michael
+*Abyss Morgan
+
+
+## Finish
+
+Have fun by using it.
+Xeon™
