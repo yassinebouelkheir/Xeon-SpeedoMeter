@@ -290,7 +290,7 @@ public OnFilterScriptExit()
             PlayerTextDraw(i, false);
         }
     }
-    for(new i = 0; i < 18; i++) TextDrawHideForAll(g_Speedo[i]);
+    for(new i = 0; i < 18; i++) TextDrawDestroy(g_Speedo[i]);
     print("  -> XSpeedo has been unloaded. Author: XeonMaster");
     return 1;
 }
@@ -345,7 +345,7 @@ public OnPlayerUpdate(playerid)
         if(IsVehicleDrivingBackwards(GetPlayerVehicleID(playerid))) Gear[playerid] = "R";
 
         PlayerTextDrawDestroy(playerid, p_Speedo[playerid][3]);
-        p_Speedo[playerid][3] = CreatePlayerTextDraw(playerid, 413.444549+speed, 375.456115, "hud:arrow");
+        p_Speedo[playerid][3] = CreatePlayerTextDraw(playerid, 414+speed, 375.456115, "hud:arrow");
     }
 
     PlayerTextDrawLetterSize(playerid, p_Speedo[playerid][3], 0.000000, 0.000000);
@@ -358,6 +358,7 @@ public OnPlayerUpdate(playerid)
     PlayerTextDrawFont(playerid, p_Speedo[playerid][3], 4);
     PlayerTextDrawSetProportional(playerid, p_Speedo[playerid][3], 0);
     PlayerTextDrawSetShadow(playerid, p_Speedo[playerid][3], 0);
+    PlayerTextDrawShow(playerid, p_Speedo[playerid][3]);
 
     PlayerTextDrawSetString(playerid, p_Speedo[playerid][2], Gear[playerid]);
 
@@ -368,18 +369,7 @@ public OnPlayerUpdate(playerid)
     format(str, sizeof(str), "%05d", GetKilometers(GetPlayerVehicleID(playerid)));
     PlayerTextDrawSetString(playerid, p_Speedo[playerid][0], str);
 
-    PlayerTextDrawShow(playerid, p_Speedo[playerid][3]);
     return 1;
-}
-
-GetPlayerSpeed(playerid) // By Michael@Belgium
-{
-    new Float:ST[4];
-    if(IsPlayerInAnyVehicle(playerid))
-    GetVehicleVelocity(GetPlayerVehicleID(playerid),ST[0],ST[1],ST[2]);
-    else GetPlayerVelocity(playerid,ST[0],ST[1],ST[2]);
-    ST[3] = floatsqroot(floatpower(floatabs(ST[0]), 2.0) + floatpower(floatabs(ST[1]), 2.0) + floatpower(floatabs(ST[2]), 2.0)) * 179.28625;
-    return floatround(ST[3]);
 }
 
 PlayerTextDraw(playerid, bool:a)
@@ -459,4 +449,14 @@ IsVehicleDrivingBackwards(vehicleid) // By Kar
         else if(Float[1] < 0 && Float[2] < 0) return true;
     }
     return false;
+}
+
+GetPlayerSpeed(playerid) // By Michael@Belgium
+{
+    new Float:ST[4];
+    if(IsPlayerInAnyVehicle(playerid))
+    GetVehicleVelocity(GetPlayerVehicleID(playerid),ST[0],ST[1],ST[2]);
+    else GetPlayerVelocity(playerid,ST[0],ST[1],ST[2]);
+    ST[3] = floatsqroot(floatpower(floatabs(ST[0]), 2.0) + floatpower(floatabs(ST[1]), 2.0) + floatpower(floatabs(ST[2]), 2.0)) * 179.28625;
+    return floatround(ST[3]);
 }
