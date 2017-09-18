@@ -9,7 +9,7 @@ This filterscript is a speedmeter with arrows (analog speedo) using edistance fo
 All you needs is a_samp and edistance includes.
 
 a_samp is already included by default (server package)
-edistance edited version will be uploaded soon (because of original one is kind of bugged)
+edistance edited version (https://raw.githubusercontent.com/XeonMaster/Xeon-SpeedoMeter/master/pawno/include/edistance.inc)
 
 ## How its works?
 
@@ -26,10 +26,10 @@ https://cdn.discordapp.com/attachments/349950142348001281/359414355856457728/sa-
 
 ## Credits:
 
-*SA:MP Team
-*Kar
-*Michael
-*Abyss Morgan
+SA:MP Team
+Kar
+Michael
+Abyss Morgan
 
 
 ## Finish
