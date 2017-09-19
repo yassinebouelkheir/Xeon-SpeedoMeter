@@ -372,9 +372,9 @@ public OnPlayerUpdate(playerid)
     return 1;
 }
 
-PlayerTextDraw(playerid, bool:a)
+PlayerTextDraw(playerid, bool:toggle)
 {
-    switch(a)
+    switch(toggle)
     {
         case true:
         {
