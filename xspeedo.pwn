@@ -23,7 +23,7 @@
 */
 
 #include <a_samp> // Credits to SA:MP Team. (Kalcor)
-#include <edistance.pwn> // Credits to EditPawn.
+#include <edistance> // Credits to EditPawn.
 
 #define SERVER_SLOTS 100 // change this to your server max slots.
 #define SERVER_NAME  "Xeon Test Server" // change this to your server name
