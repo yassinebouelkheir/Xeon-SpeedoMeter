@@ -23,10 +23,10 @@
 */
 
 #include <a_samp> // Credits to SA:MP Team. (Kalcor)
-#include <edistance> // Credits to EditPawn.
+#include <edistance.pwn> // Credits to EditPawn.
 
 #define SERVER_SLOTS 100 // change this to your server max slots.
-#define SERVER_NAME  "Test Server Name" // change this to your server name
+#define SERVER_NAME  "Xeon Test Server" // change this to your server name
 
 // Now you can stop editing.
 #if defined MAX_PLAYERS
@@ -342,6 +342,7 @@ public OnPlayerUpdate(playerid)
     else
     {
         if(speed > 0) Gear[playerid] = "D";
+        if(speed > 200) speed = 205; 
         if(IsVehicleDrivingBackwards(GetPlayerVehicleID(playerid))) Gear[playerid] = "R";
 
         PlayerTextDrawDestroy(playerid, p_Speedo[playerid][3]);
