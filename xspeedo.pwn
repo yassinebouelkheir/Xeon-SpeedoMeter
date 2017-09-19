@@ -326,7 +326,6 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 
 public OnPlayerUpdate(playerid)
 {
-    if(!IsPlayerConnected(playerid)) return 1;
     if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return 1;
 
     new speed;
