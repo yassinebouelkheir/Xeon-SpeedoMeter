@@ -16,7 +16,7 @@
  /* 
     ScriptName    : XSpeedoMeter
     Author        : XeonMaster
-    Version       : 1.0
+    Version       : 2.0
     Edited        : 17/09/2017
     License       : GNU General v3.0
     Constributors : No-one for now.
