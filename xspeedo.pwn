@@ -44,7 +44,7 @@ new
 public OnFilterScriptInit()
 {
 
-    for(new i = 0; i < GetMaxPlayers(); i++) if(IsPlayerConnected(i)) PlayerTextDraw(i, true);
+    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) if(IsPlayerConnected(i)) PlayerTextDraw(i, true);
 
     g_Speedo[0] = TextDrawCreate(406.888854, 330.871154, "_");
     TextDrawLetterSize(g_Speedo[0], -0.007110, 8.546487);
@@ -283,7 +283,7 @@ public OnFilterScriptInit()
 
 public OnFilterScriptExit()
 {
-    for(new i = 0; i < GetMaxPlayers(); i++) 
+    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) 
     {
         if(IsPlayerConnected(i)) 
         {
