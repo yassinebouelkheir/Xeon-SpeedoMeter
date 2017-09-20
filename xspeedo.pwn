@@ -193,7 +193,7 @@ public OnFilterScriptInit()
     TextDrawSetProportional(g_Speedo[8], 1);
     TextDrawSetShadow(g_Speedo[8], 0);
 
-    g_Speedo[9] = TextDrawCreate(526.197021, 309.964385, SERVER_NAME);
+    g_Speedo[9] = TextDrawCreate(527.197021, 309.964385, SERVER_NAME);
     TextDrawLetterSize(g_Speedo[9], 0.400000, 1.600000);
     TextDrawAlignment(g_Speedo[9], 2);
     TextDrawColor(g_Speedo[9], -1);
