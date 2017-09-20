@@ -28,23 +28,44 @@
 #define SERVER_SLOTS 100 // change this to your server max slots.
 #define SERVER_NAME  "Xeon Test Server" // change this to your server name
 
+// Un-comment this on case you want to use timers instand of OnPlayerUpdate
+//#define USE_TIMERS
+//#define UPDATE_DELAY 50
+
 // Now you can stop editing.
 #if defined MAX_PLAYERS
     #undef MAX_PLAYERS
         #define MAX_PLAYERS SERVER_SLOTS
 #endif
 
+#if defined USE_TIMERS && !defined UPDATE_DELAY
+ #error "You have to set UPDATE_DELAY in case to use Timers"
+#else if !defined USE_TIMERS && defined UPDATE_DELAY 
+ #error "You have to define USE_TIMERS in case to use UPDATE_DELAY"
+#endif
+
 new 
     PlayerText:p_Speedo[MAX_PLAYERS][4],
     Text:g_Speedo[18],
 
-    Gear[MAX_PLAYERS][2]
+    Gear[MAX_PLAYERS][2],
+    
+    #if defined USE_TIMERS
+     p_Timer[MAX_PLAYERS]
+    #endif
 ;
 
 public OnFilterScriptInit()
 {
 
-    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) if(IsPlayerConnected(i)) PlayerTextDraw(i, true);
+    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) 
+    {
+        if(IsPlayerConnected(i)) 
+        PlayerTextDraw(i, true);
+        #if defined USE_TIMERS
+         p_Timer[i] = SetTimerEx("OnPlayerSpeedoUpdate", UPDATE_DELAY, true, "i", i);
+        #endif
+    }
 
     g_Speedo[0] = TextDrawCreate(406.888854, 330.871154, "_");
     TextDrawLetterSize(g_Speedo[0], -0.007110, 8.546487);
@@ -288,6 +309,9 @@ public OnFilterScriptExit()
         if(IsPlayerConnected(i)) 
         {
             PlayerTextDraw(i, false);
+            #if defined USE_TIMERS
+             KillTimer(p_Timer[i]);
+            #endif
         }
     }
     for(new i = 0; i < 18; i++) TextDrawDestroy(g_Speedo[i]);
@@ -299,6 +323,9 @@ public OnPlayerConnect(playerid)
 {
     Gear[playerid] = "P";
     PlayerTextDraw(playerid, true);
+    #if defined USE_TIMERS
+     p_Timer[playerid] = SetTimerEx("OnPlayerSpeedoUpdate", UPDATE_DELAY, true, "i", playerid);
+    #endif
     return 1;
 }
 
@@ -306,6 +333,9 @@ public OnPlayerDisconnect(playerid)
 {
     PlayerTextDraw(playerid, false);
     for(new i = 0; i < 18; i++) TextDrawHideForPlayer(playerid, g_Speedo[i]);
+    #if defined USE_TIMERS
+     KillTimer(p_Timer[playerid]);
+    #endif
     return 1;
 }
 
@@ -371,6 +401,59 @@ public OnPlayerUpdate(playerid)
 
     return 1;
 }
+
+#if defined USE_TIMERS
+
+forward public OnPlayerSpeedoUpdate(playerid);
+public OnPlayerSpeedoUpdate(playerid)
+{
+if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return 1;
+
+    new speed;
+    speed = GetPlayerSpeed(playerid);
+
+    if(speed == 0)
+    {
+        Gear[playerid] = "P";
+
+        PlayerTextDrawDestroy(playerid, p_Speedo[playerid][3]);
+        p_Speedo[playerid][3] = CreatePlayerTextDraw(playerid, 413.444549, 375.456115, "hud:arrow");
+    }
+    else
+    {
+        if(speed > 0) Gear[playerid] = "D";
+        if(speed > 200) speed = 205; 
+        if(IsVehicleDrivingBackwards(GetPlayerVehicleID(playerid))) Gear[playerid] = "R";
+
+        PlayerTextDrawDestroy(playerid, p_Speedo[playerid][3]);
+        p_Speedo[playerid][3] = CreatePlayerTextDraw(playerid, 414+speed, 375.456115, "hud:arrow");
+    }
+
+    PlayerTextDrawLetterSize(playerid, p_Speedo[playerid][3], 0.000000, 0.000000);
+    PlayerTextDrawTextSize(playerid, p_Speedo[playerid][3], 8.000000, 32.039978);
+    PlayerTextDrawAlignment(playerid, p_Speedo[playerid][3], 1);
+    PlayerTextDrawColor(playerid, p_Speedo[playerid][3], -1378294017);
+    PlayerTextDrawSetShadow(playerid, p_Speedo[playerid][3], 0);
+    PlayerTextDrawSetOutline(playerid, p_Speedo[playerid][3], 0);
+    PlayerTextDrawBackgroundColor(playerid, p_Speedo[playerid][3], 255);
+    PlayerTextDrawFont(playerid, p_Speedo[playerid][3], 4);
+    PlayerTextDrawSetProportional(playerid, p_Speedo[playerid][3], 0);
+    PlayerTextDrawSetShadow(playerid, p_Speedo[playerid][3], 0);
+    PlayerTextDrawShow(playerid, p_Speedo[playerid][3]);
+
+    PlayerTextDrawSetString(playerid, p_Speedo[playerid][2], Gear[playerid]);
+
+    new str[6];
+    format(str, sizeof(str), "%04d", speed);
+    PlayerTextDrawSetString(playerid, p_Speedo[playerid][1], str);
+
+    format(str, sizeof(str), "%05d", GetKilometers(GetPlayerVehicleID(playerid)));
+    PlayerTextDrawSetString(playerid, p_Speedo[playerid][0], str);
+
+    return 1;
+}
+
+#endif
 
 PlayerTextDraw(playerid, bool:toggle)
 {
