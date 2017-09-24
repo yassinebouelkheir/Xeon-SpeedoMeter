@@ -16,16 +16,19 @@
  /* 
     ScriptName    : XSpeedoMeter
     Author        : XeonMaster
-    Version       : 2.0
+    Version       : 2.3
     Edited        : 17/09/2017
     License       : GNU General v3.0
     Constributors : No-one for now.
 */
 
 #include <a_samp> // Credits to SA:MP Team. (Kalcor)
-#include <edistance> // Credits to EditPawn.
+
+#define _FOREACH_NO_TEST
+#include <foreach> // Credits to Kar
 
 #define SERVER_SLOTS 100 // change this to your server max slots.
+#define SERVER_VEHICLES 500 // change this to your server max vehicles
 #define SERVER_NAME  "Xeon Test Server" // change this to your server name
 
 // Un-comment this on case you want to use timers instand of OnPlayerUpdate
@@ -38,27 +41,46 @@
         #define MAX_PLAYERS SERVER_SLOTS
 #endif
 
+#if defined MAX_VEHICLES
+    #undef MAX_VEHICLES
+        #define MAX_VEHICLES SERVER_VEHICLES
+#endif
+
+#if !defined SERVER_SLOTS
+    #error "Please Check if SERVER_SLOTS defined and assigned. else the script won't work correctly."
+#endif
+
+#if !defined SERVER_VEHICLES
+    #error "Please Check if SERVER_VEHICLES defined and assigned. else the script won't work correctly."
+#endif
+
 #if defined USE_TIMERS && !defined UPDATE_DELAY
  #error "You have to set UPDATE_DELAY in case to use Timers"
-#else if !defined USE_TIMERS && defined UPDATE_DELAY 
+#endif
+
+#if !defined USE_TIMERS && defined UPDATE_DELAY 
  #error "You have to define USE_TIMERS in case to use UPDATE_DELAY"
 #endif
 
+#define GetKilometers(%0) VehicleDistance[%0]
 new 
     PlayerText:p_Speedo[MAX_PLAYERS][4],
     Text:g_Speedo[18],
 
-    Gear[MAX_PLAYERS][2],
-    
     #if defined USE_TIMERS
-     p_Timer[MAX_PLAYERS]
+    p_Timer[MAX_PLAYERS],
     #endif
+
+    Gear[MAX_PLAYERS][2],
+    VehicleDistance[MAX_VEHICLES],
+    Float: VehicleOldPos[MAX_VEHICLES][3],
+    CountingTimer[MAX_VEHICLES]
 ;
 
 public OnFilterScriptInit()
 {
 
-    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) 
+    foreach (new i : Player)
     {
         if(IsPlayerConnected(i)) 
         PlayerTextDraw(i, true);
@@ -66,6 +88,7 @@ public OnFilterScriptInit()
          p_Timer[i] = SetTimerEx("OnPlayerSpeedoUpdate", UPDATE_DELAY, true, "i", i);
         #endif
     }
+    for(new i = 0; i < MAX_VEHICLES; i++) VehicleDistance[i] = random(1000);
 
     g_Speedo[0] = TextDrawCreate(406.888854, 330.871154, "_");
     TextDrawLetterSize(g_Speedo[0], -0.007110, 8.546487);
@@ -304,7 +327,7 @@ public OnFilterScriptInit()
 
 public OnFilterScriptExit()
 {
-    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) 
+    foreach (new i : Player)
     {
         if(IsPlayerConnected(i)) 
         {
@@ -314,7 +337,7 @@ public OnFilterScriptExit()
             #endif
         }
     }
-    for(new i = 0; i < 18; i++) TextDrawDestroy(g_Speedo[i]);
+    for(new i = 0; i < sizeof(g_Speedo); i++) TextDrawDestroy(g_Speedo[i]);
     print("  -> XSpeedo has been unloaded. Author: XeonMaster");
     return 1;
 }
@@ -332,9 +355,9 @@ public OnPlayerConnect(playerid)
 public OnPlayerDisconnect(playerid)
 {
     PlayerTextDraw(playerid, false);
-    for(new i = 0; i < 18; i++) TextDrawHideForPlayer(playerid, g_Speedo[i]);
+    for(new i = 0; i < sizeof(g_Speedo); i++) TextDrawHideForPlayer(playerid, g_Speedo[i]);
     #if defined USE_TIMERS
-     KillTimer(p_Timer[playerid]);
+    KillTimer(p_Timer[playerid]);
     #endif
     return 1;
 }
@@ -344,12 +367,14 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
     if(newstate == PLAYER_STATE_DRIVER)
     {
         for(new i = 0; i < 4; i++) PlayerTextDrawShow(playerid, p_Speedo[playerid][i]);
-        for(new i = 0; i < 18; i++) TextDrawShowForPlayer(playerid, g_Speedo[i]);
+        for(new i = 0; i < sizeof(g_Speedo); i++) TextDrawShowForPlayer(playerid, g_Speedo[i]);
+        CountingTimer[GetPlayerVehicleID(playerid)] = SetTimerEx("KilometersCounter", 1000, true, "i", GetPlayerVehicleID(playerid));
     }
     else
     {
         for(new i = 0; i < 4; i++) PlayerTextDrawHide(playerid, p_Speedo[playerid][i]);
-        for(new i = 0; i < 18; i++) TextDrawHideForPlayer(playerid, g_Speedo[i]);
+        for(new i = 0; i < sizeof(g_Speedo); i++) TextDrawHideForPlayer(playerid, g_Speedo[i]);
+        KillTimer(CountingTimer[GetPlayerVehicleID(playerid)]);
     }
     return 1;
 }
@@ -361,7 +386,7 @@ public OnPlayerUpdate(playerid)
     new speed;
     speed = GetPlayerSpeed(playerid);
 
-    if(speed == 0)
+    if(!speed)
     {
         Gear[playerid] = "P";
 
@@ -454,6 +479,24 @@ if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return 1;
 }
 
 #endif
+
+forward public KilometersCounter(vehicleid);
+public KilometersCounter(vehicleid)
+{
+    new Float: VehicleNewPos[3];
+    VehicleNewPos[0] = VehicleOldPos[vehicleid][0];
+    VehicleNewPos[1] = VehicleOldPos[vehicleid][1];
+    VehicleNewPos[2] = VehicleOldPos[vehicleid][2];
+
+    GetVehiclePos(vehicleid, VehicleOldPos[vehicleid][0], VehicleOldPos[vehicleid][1], VehicleOldPos[vehicleid][2]);
+
+    VehicleNewPos[0] -= VehicleOldPos[vehicleid][0];
+    VehicleNewPos[1] -= VehicleOldPos[vehicleid][1];
+    VehicleNewPos[2] -= VehicleOldPos[vehicleid][2];
+
+    VehicleDistance[vehicleid] += floatsqroot((VehicleNewPos[0]*VehicleNewPos[0])+(VehicleNewPos[1]*VehicleNewPos[1])+(VehicleNewPos[2]*VehicleNewPos[2])) / 1000.0;
+    return 1;
+}
 
 PlayerTextDraw(playerid, bool:toggle)
 {
