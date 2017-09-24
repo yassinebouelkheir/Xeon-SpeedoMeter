@@ -2,7 +2,7 @@
 
 ## Introduction:
 This is another simple filterscript for SA:MP server (GTA SA: Modification).
-This filterscript is a speedmeter with arrows (analog speedo) using edistance for counting the Kilometers per vehicle.
+This filterscript is a speedmeter with arrows (analog speedo).
 
 ## Requipements:
 
