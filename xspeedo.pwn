@@ -362,13 +362,13 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 {
     if(newstate == PLAYER_STATE_DRIVER)
     {
-        for(new i = 0; i < 4; i++) PlayerTextDrawShow(playerid, p_Speedo[playerid][i]);
+        for(new i = 0; i < sizeof(p_Speedo[]); i++) PlayerTextDrawShow(playerid, p_Speedo[playerid][i]);
         for(new i = 0; i < sizeof(g_Speedo); i++) TextDrawShowForPlayer(playerid, g_Speedo[i]);
         CountingTimer[GetPlayerVehicleID(playerid)] = SetTimerEx("KilometersCounter", 1000, true, "i", GetPlayerVehicleID(playerid));
     }
     else
     {
-        for(new i = 0; i < 4; i++) PlayerTextDrawHide(playerid, p_Speedo[playerid][i]);
+        for(new i = 0; i < sizeof(p_Speedo[]); i++) PlayerTextDrawHide(playerid, p_Speedo[playerid][i]);
         for(new i = 0; i < sizeof(g_Speedo); i++) TextDrawHideForPlayer(playerid, g_Speedo[i]);
         KillTimer(CountingTimer[GetPlayerVehicleID(playerid)]);
     }
@@ -378,7 +378,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 public OnPlayerUpdate(playerid)
 {
     if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return 1;
-    
+
     new speed = GetPlayerSpeed(playerid);
 
     if(!speed)
