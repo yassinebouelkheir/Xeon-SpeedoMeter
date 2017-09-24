@@ -82,7 +82,6 @@ public OnFilterScriptInit()
 
     foreach (new i : Player)
     {
-        if(IsPlayerConnected(i)) 
         PlayerTextDraw(i, true);
         #if defined USE_TIMERS
          p_Timer[i] = SetTimerEx("OnPlayerSpeedoUpdate", UPDATE_DELAY, true, "i", i);
@@ -329,13 +328,10 @@ public OnFilterScriptExit()
 {
     foreach (new i : Player)
     {
-        if(IsPlayerConnected(i)) 
-        {
-            PlayerTextDraw(i, false);
-            #if defined USE_TIMERS
-             KillTimer(p_Timer[i]);
-            #endif
-        }
+       PlayerTextDraw(i, false);
+       #if defined USE_TIMERS
+        KillTimer(p_Timer[i]);
+       #endif
     }
     for(new i = 0; i < sizeof(g_Speedo); i++) TextDrawDestroy(g_Speedo[i]);
     print("  -> XSpeedo has been unloaded. Author: XeonMaster");
@@ -382,9 +378,8 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 public OnPlayerUpdate(playerid)
 {
     if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return 1;
-
-    new speed;
-    speed = GetPlayerSpeed(playerid);
+    
+    new speed = GetPlayerSpeed(playerid);
 
     if(!speed)
     {
