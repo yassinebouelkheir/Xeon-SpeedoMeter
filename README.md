@@ -17,7 +17,7 @@ When a player get in a vehicle the textdraw showup  (speedo) and after the playe
 
 ## Video
 
-Coming Soon...
+https://youtu.be/_I5l2s974xM
 
 ## Screenshots
 
