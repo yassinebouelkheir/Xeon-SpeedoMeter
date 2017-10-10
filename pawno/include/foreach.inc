@@ -636,46 +636,46 @@ Notes:
 		Player@YSII_Cg = _Y_ITER_C3:0;
 		new
 			lastPlayer = MAX_PLAYERS;
-		for (new i = 0; i != MAX_PLAYERS; ++i)
+		for (new _i = 0; _i != MAX_PLAYERS; ++_i)
 		{
-			if (IsPlayerConnected(i))
+			if (IsPlayerConnected(_i))
 			{
 				#if defined _FOREACH_BOT
 					// Had to do "if ! else" due to compile options.
-					if (!IsPlayerNPC(i))
+					if (!IsPlayerNPC(_i))
 					{
-						Player@YSII_Ag[lastPlayer] = i;
+						Player@YSII_Ag[lastPlayer] = _i;
 						++Player@YSII_Cg;
-						lastPlayer = i;
+						lastPlayer = _i;
 					}
 					#if !defined FOREACH_NO_BOTS
 						else
 						{
-							Bot@YSII_Ag[lastBot] = i;
+							Bot@YSII_Ag[lastBot] = _i;
 							++Bot@YSII_Cg;
-							lastBot = i;
+							lastBot = _i;
 						}
 						#pragma tabsize 4
-						Character@YSII_Ag[lastCharacter] = i;
+						Character@YSII_Ag[lastCharacter] = _i;
 						++Character@YSII_Cg;
-						lastCharacter = i;
+						lastCharacter = _i;
 					#endif
 				#else
-					Player@YSII_Ag[lastPlayer] = i;
+					Player@YSII_Ag[lastPlayer] = _i;
 					++Player@YSII_Cg;
-					lastPlayer = i;
+					lastPlayer = _i;
 				#endif
 			}
 			else
 			{
 				#if defined _FOREACH_BOT && !defined FOREACH_NO_BOTS
-					Bot@YSII_Ag[i] = MAX_PLAYERS + 1;
-					//Bot@YSII_Rg[i] = -1;
-					Character@YSII_Ag[i] = MAX_PLAYERS + 1;
-					//Character@YSII_Rg[i] = -1;
+					Bot@YSII_Ag[_i] = MAX_PLAYERS + 1;
+					//Bot@YSII_Rg[_i] = -1;
+					Character@YSII_Ag[_i] = MAX_PLAYERS + 1;
+					//Character@YSII_Rg[_i] = -1;
 				#endif
-				Player@YSII_Ag[i] = MAX_PLAYERS + 1;
-				//Player@YSII_Rg[i] = -1;
+				Player@YSII_Ag[_i] = MAX_PLAYERS + 1;
+				//Player@YSII_Rg[_i] = -1;
 			}
 		}
 		#if defined _FOREACH_BOT && !defined FOREACH_NO_BOTS
@@ -748,46 +748,46 @@ Notes:
 		Player@YSII_Ag[MAX_PLAYERS] = MAX_PLAYERS;
 		new
 			lastPlayer = MAX_PLAYERS;
-		for (new i = 0; i != MAX_PLAYERS; ++i)
+		for (new _i = 0; _i != MAX_PLAYERS; ++_i)
 		{
-			if (IsPlayerConnected(i))
+			if (IsPlayerConnected(_i))
 			{
 				#if defined _FOREACH_BOT
 					// Had to do "if ! else" due to compile options.
-					if (!IsPlayerNPC(i))
+					if (!IsPlayerNPC(_i))
 					{
-						Player@YSII_Ag[lastPlayer] = i;
+						Player@YSII_Ag[lastPlayer] = _i;
 						++Player@YSII_Cg;
-						lastPlayer = i;
+						lastPlayer = _i;
 					}
 					#if !defined FOREACH_NO_BOTS
 						else
 						{
-							Bot@YSII_Ag[lastBot] = i;
+							Bot@YSII_Ag[lastBot] = _i;
 							++Bot@YSII_Cg;
-							lastBot = i;
+							lastBot = _i;
 						}
 						#pragma tabsize 4
-						Character@YSII_Ag[lastCharacter] = i;
+						Character@YSII_Ag[lastCharacter] = _i;
 						++Character@YSII_Cg;
-						lastCharacter = i;
+						lastCharacter = _i;
 					#endif
 				#else
-					Player@YSII_Ag[lastPlayer] = i;
+					Player@YSII_Ag[lastPlayer] = _i;
 					++Player@YSII_Cg;
-					lastPlayer = i;
+					lastPlayer = _i;
 				#endif
 			}
 			else
 			{
 				#if defined _FOREACH_BOT && !defined FOREACH_NO_BOTS
-					Bot@YSII_Ag[i] = MAX_PLAYERS + 1;
-					//Bot@YSII_Rg[i] = -1;
-					Character@YSII_Ag[i] = MAX_PLAYERS + 1;
-					//Character@YSII_Rg[i] = -1;
+					Bot@YSII_Ag[_i] = MAX_PLAYERS + 1;
+					//Bot@YSII_Rg[_i] = -1;
+					Character@YSII_Ag[_i] = MAX_PLAYERS + 1;
+					//Character@YSII_Rg[_i] = -1;
 				#endif
-				Player@YSII_Ag[i] = MAX_PLAYERS + 1;
-				//Player@YSII_Rg[i] = -1;
+				Player@YSII_Ag[_i] = MAX_PLAYERS + 1;
+				//Player@YSII_Rg[_i] = -1;
 			}
 		}
 		#if defined _FOREACH_BOT && !defined FOREACH_NO_BOTS
@@ -1085,9 +1085,9 @@ Notes:
 
 stock Iter_ClearInternal(&count, array[], size)
 {
-	for (new i = 0, t = size + 1; i < size; ++i)
+	for (new _i = 0, t = size + 1; _i < size; ++_i)
 	{
-		array[i] = t;
+		array[_i] = t;
 	}
 	array[size] = size;
 	count = 0;
