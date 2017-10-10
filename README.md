@@ -6,9 +6,9 @@ This filterscript is a speedometer with digital displays and an analogue needle.
 
 
 ## Requirements
-All you needs are the SA:MP includes, [foreach](https://github.com/karimcambridge/SAMP-foreach) and a PAWN compiler.
+All you need are the SA:MP includes, [foreach](https://github.com/karimcambridge/SAMP-foreach) and a PAWN compiler.
 
-The SA:MP includes are already included by default (server package).
+The SA:MP includes are already included inside the server package by default.
 You can get foreach from https://github.com/karimcambridge/SAMP-foreach or a carbon copy from this repository.
 
 
