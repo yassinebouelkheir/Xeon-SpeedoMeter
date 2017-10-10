@@ -16,10 +16,10 @@
  /* 
     ScriptName    : XSpeedoMeter
     Author        : XeonMaster
-    Version       : 2.3
+    Version       : 3.0
     Edited        : 10/10/2017
     License       : GNU General v3.0
-    Constributors : No-one for now.
+    Developers    : BigETI
 */
 
 // User definitions
