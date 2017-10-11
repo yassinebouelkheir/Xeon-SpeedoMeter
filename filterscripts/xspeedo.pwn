@@ -559,12 +559,8 @@ public OnPlayerUpdate(playerid)
         }
         else
         {
-            new Float:graphical_speed = speed;
-            if (speed > 200.0)
-            {
-                graphical_speed = 200.0;
-            }
-            else if (speed > 0.0)
+            new Float:graphical_speed = speed > 200.0 ? 200.0 : speed;
+            if (speed > 0.0)
             {
                 if (IsVehicleDrivingBackwards(GetPlayerVehicleID(playerid)))
                 {
